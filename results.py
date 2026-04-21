@@ -1,0 +1,163 @@
+# =============================================
+# Spam Classifier - Results Page
+# =============================================
+
+import webbrowser, os
+
+acc  = 0.8870
+prec = 0.8692
+rec  = 0.8523
+f1   = 0.8607
+
+html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spam Classifier Results</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 40px 20px;
+        }}
+        h1 {{ font-size: 2.5rem; margin-bottom: 10px; }}
+        .subtitle {{ color: #aaa; margin-bottom: 40px; font-size: 1rem; }}
+        .cards {{
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+        }}
+        .card {{
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 30px 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }}
+        .card:hover {{ transform: translateY(-5px); }}
+        .card .value {{
+            font-size: 2.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }}
+        .card .label {{
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }}
+        .matrix-section {{
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }}
+        .matrix-section h2 {{ margin-bottom: 20px; color: #a78bfa; }}
+        .matrix-section img {{
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+        }}
+        .predictions {{
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }}
+        .pred-card {{
+            background: rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }}
+        .pred-card .email-label {{ font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }}
+        .spam {{ color: #f87171; font-size: 1.3rem; font-weight: bold; }}
+        .not-spam {{ color: #4ade80; font-size: 1.3rem; font-weight: bold; }}
+        .dataset-info {{
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 0.95rem;
+            color: #ccc;
+            text-align: center;
+        }}
+    </style>
+</head>
+<body>
+    <h1>🛡️ Spam Email Classifier</h1>
+    <p class="subtitle">Random Forest Model · DS363 Project</p>
+
+    <div class="dataset-info">
+        📦 Dataset: 10,000 emails &nbsp;|&nbsp;
+        🏋️ Train: 8,000 &nbsp;|&nbsp;
+        🧪 Test: 2,000 &nbsp;|&nbsp;
+        🚨 Spam: 3,995 &nbsp;|&nbsp;
+        ✅ Not Spam: 6,005
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="value">{acc*100:.1f}%</div>
+            <div class="label">Accuracy</div>
+        </div>
+        <div class="card">
+            <div class="value">{prec*100:.1f}%</div>
+            <div class="label">Precision</div>
+        </div>
+        <div class="card">
+            <div class="value">{rec*100:.1f}%</div>
+            <div class="label">Recall</div>
+        </div>
+        <div class="card">
+            <div class="value">{f1*100:.1f}%</div>
+            <div class="label">F1-Score</div>
+        </div>
+    </div>
+
+    <div class="matrix-section">
+        <h2>Confusion Matrix</h2>
+        <img src="confusion_matrix.png" alt="Confusion Matrix">
+    </div>
+
+    <h2 style="margin-bottom: 20px; color: #60a5fa;">Sample Predictions</h2>
+    <div class="predictions">
+        <div class="pred-card">
+            <div class="email-label">Email 1</div>
+            <div class="not-spam">✅ NOT Spam</div>
+        </div>
+        <div class="pred-card">
+            <div class="email-label">Email 2</div>
+            <div class="not-spam">✅ NOT Spam</div>
+        </div>
+        <div class="pred-card">
+            <div class="email-label">Email 3</div>
+            <div class="spam">🚨 SPAM</div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+with open("results.html", "w", encoding="utf-8") as f:
+    f.write(html)
+
+webbrowser.open("file://" + os.path.abspath("results.html"))
+print("✅ Results page opened in browser!")
